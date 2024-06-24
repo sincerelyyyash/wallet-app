@@ -10,14 +10,30 @@ app.post("/hdfcWebhook", async (req, res) => {
   const paymentInformation: {
     token: string;
     userId: string;
-    amount: string
   } = {
     token: req.body.token,
     userId: req.body.user_identifier,
-    amount: req.body.amount
   };
 
   try {
+
+    const transaction = await db.onRampTransaction.findFirst({
+      where: {
+        userId: Number(paymentInformation.userId),
+        token: paymentInformation.token,
+      },
+    });
+
+    if (!transaction) {
+      return res.status(404).json({ message: "Transaction not found" });
+    }
+
+    if (transaction.status === "Success") {
+      return res.status(200).json({ message: "Transaction already processed successfully" });
+    }
+
+    const { amount } = transaction;
+
     await db.$transaction([
       db.balance.updateMany({
         where: {
@@ -25,8 +41,7 @@ app.post("/hdfcWebhook", async (req, res) => {
         },
         data: {
           amount: {
-            // You can also get this from your DB
-            increment: Number(paymentInformation.amount)
+            increment: amount
           }
         }
       }),
