@@ -1,25 +1,29 @@
 import express from "express";
 import db from "@repo/db/client";
+import { z } from "zod";
+
+
 const app = express();
 
 app.use(express.json())
 
+
+const paymentInfoSchema = z.object({
+  token: z.string(),
+  user_identifier: z.string().transform((val) => Number(val)),
+});
+
+
 app.post("/hdfcWebhook", async (req, res) => {
-  //TODO: Add zod validation here?
   //TODO: HDFC bank should ideally send us a secret so we know this is sent by them
-  const paymentInformation: {
-    token: string;
-    userId: string;
-  } = {
-    token: req.body.token,
-    userId: req.body.user_identifier,
-  };
+
+  const paymentInformation = paymentInfoSchema.parse(req.body);
 
   try {
 
     const transaction = await db.onRampTransaction.findFirst({
       where: {
-        userId: Number(paymentInformation.userId),
+        userId: paymentInformation.user_identifier,
         token: paymentInformation.token,
       },
     });
@@ -37,7 +41,7 @@ app.post("/hdfcWebhook", async (req, res) => {
     await db.$transaction([
       db.balance.updateMany({
         where: {
-          userId: Number(paymentInformation.userId)
+          userId: paymentInformation.user_identifier
         },
         data: {
           amount: {
@@ -67,4 +71,6 @@ app.post("/hdfcWebhook", async (req, res) => {
 
 })
 
-app.listen(3003);
+app.listen(3003, () => {
+  console.log("Server is running on port 3003");
+});
