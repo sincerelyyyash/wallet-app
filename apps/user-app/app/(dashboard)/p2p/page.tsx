@@ -1,8 +1,12 @@
+import { SendCard } from "../../../components/SendMoneyCard"
 
 
 function page() {
   return (
-    <div>P2p Transfer</div>
+    <div className="w-full">
+        <SendCard/>
+
+    </div>
   )
 }
 
