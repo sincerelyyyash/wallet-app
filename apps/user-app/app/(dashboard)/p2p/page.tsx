@@ -19,40 +19,38 @@ async function getBalance() {
   }
 }
 
-async function getOnRampTransactions() {
+async function getP2pTransactions() {
   const session = await getServerSession(authOptions);
-  const txns = await prisma.onRampTransaction.findMany({
+  const txns = await prisma.p2pTransfer.findMany({
     where: {
-      userId: Number(session?.user?.id)
+      fromUserId: Number(session?.user?.id),
     }
   });
   return txns.map(t => ({
-    time: t.startTime,
+    time: t.timestamp,
     amount: t.amount,
-    status: t.status,
-    provider: t.provider
   }))
 }
 export default async function() {
   const balance = await getBalance();
-  const transactions = await getOnRampTransactions();
+  const transactions = await getP2pTransactions();
 
-  return (
-    <div className="w-screen p-4">
-      <div className="text-4xl text-[#6a51a6] mb-8 font-bold text-center">
-        Transfer
+
+  return <div className="w-screen">
+    <div className="text-4xl text-[#6a51a6] pt-8 mb-8 font-bold">
+      Send Money
+    </div>
+    <div className="grid grid-cols-1 md:grid-cols-2 p-4">
+      <div>
+        <SendCard />
       </div>
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-        <div className="flex justify-center">
-          <SendCard />
+      <div>
+        <div className="pb-4">
+          <OnRampTransactions transactions={transactions} />
         </div>
-        <div>
-          <BalanceCard amount={balance.amount} locked={balance.locked} />
-          <div className="pt-4">
-            <OnRampTransactions transactions={transactions} />
-          </div>
-        </div>
+        <BalanceCard amount={balance.amount} locked={balance.locked} />
       </div>
     </div>
-  );
+  </div>
 }
+

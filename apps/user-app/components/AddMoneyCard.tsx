@@ -19,7 +19,7 @@ export const AddMoney = () => {
   const [provider, setProvider] = useState(SUPPORTED_BANKS[0]?.name || "");
   const [value, setValue] = useState(0)
   return <Card title="Add Money">
-    <div className="w-full">
+    <div className="w-full text-white">
       <TextInput label={"Amount"} placeholder={"Amount"} onChange={(val) => {
         setValue(Number(val))
       }} />
