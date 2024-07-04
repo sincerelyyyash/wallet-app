@@ -17,15 +17,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }): JSX.Element {
   return (
-    <html lang="en">
-      <Providers>
-        <body className={inter.className}>
-          <div className="min-w-screen min-h-screen bg-black">
+    <html lang="en" className="h-full">
+      <body className={`${inter.className} h-full bg-black text-white`}>
+        <Providers>
+          <div className="min-h-screen bg-black">
             <AppbarClient />
             {children}
           </div>
-        </body>
-      </Providers>
+        </Providers>
+      </body>
     </html>
   );
 }
+

@@ -13,7 +13,7 @@ export function SendCard() {
   return (
     <div className="flex items-center justify-center">
       <Center>
-        <div className="w-full max-w-lg p-6">
+        <div className="w-full max-w-lg p-6 border-[#6a51a6]">
           <Card title="Send">
             <div className="min-w-72 pt-2">
               <TextInput
