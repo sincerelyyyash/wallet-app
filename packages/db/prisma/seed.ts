@@ -3,17 +3,17 @@ import bcrypt from "bcrypt";
 const prisma = new PrismaClient()
 
 async function main() {
-  const alice = await prisma.user.upsert({
+  const yash = await prisma.user.upsert({
     where: { number: '1111111111' },
     update: {},
     create: {
       number: '1111111111',
       password: await bcrypt.hash('alice', 10),
-      name: 'alice',
+      name: 'yash',
       Balance: {
         create: {
-            amount: 20000,
-            locked: 0
+          amount: 20000,
+          locked: 0
         }
       },
       OnRampTransaction: {
@@ -27,17 +27,17 @@ async function main() {
       },
     },
   })
-  const bob = await prisma.user.upsert({
+  const aditya = await prisma.user.upsert({
     where: { number: '2222222222' },
     update: {},
     create: {
       number: '2222222222',
       password: await bcrypt.hash('bob', 10),
-      name: 'bob',
+      name: 'Aditya',
       Balance: {
         create: {
-            amount: 2000,
-            locked: 0
+          amount: 2000,
+          locked: 0
         }
       },
       OnRampTransaction: {
@@ -51,7 +51,7 @@ async function main() {
       },
     },
   })
-  console.log({ alice, bob })
+  console.log({ yash, aditya })
 }
 main()
   .then(async () => {

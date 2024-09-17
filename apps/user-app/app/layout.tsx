@@ -18,9 +18,9 @@ export default function RootLayout({
 }): JSX.Element {
   return (
     <html lang="en" className="h-full">
-      <body className={`${inter.className} h-full bg-black text-white`}>
+      <body className={`${inter.className} h-full`}>
         <Providers>
-          <div className="min-h-screen bg-black">
+          <div className="min-h-screen">
             <AppbarClient />
             {children}
           </div>
