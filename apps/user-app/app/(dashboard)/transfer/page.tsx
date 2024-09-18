@@ -39,9 +39,7 @@ export default async function() {
   const transactions = await getOnRampTransactions();
 
   return <div className="w-screen">
-    <div className="text-4xl md:mt-0
-            font-bold bg-clip-text text-transparent 
-            bg-gradient-to-b from-neutral-50 to-neutral-400 p-2 pt-10">
+    <div className="text-3xl md:mt-0 font-bold text-zinc-800 p-2">
       Transfer
     </div>
     <div className="grid grid-cols-1 gap-4 md:grid-cols-2 p-4">
