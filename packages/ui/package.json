@@ -12,7 +12,9 @@
     "./textinput": "./src/TextInput.tsx",
     "./theme-provider": "./src/theme-provider.tsx",
     "./cn": "./lib/utils.ts",
-    "./sidebar": "./src/sidebar.tsx"
+    "./sidebar": "./src/sidebar.tsx",
+    "./dropdown-menu": "./src/dropdown-menu.tsx",
+    "./theme-toggle": "./src/theme-toggle.tsx"
   },
   "scripts": {
     "lint": "eslint . --max-warnings 0",
