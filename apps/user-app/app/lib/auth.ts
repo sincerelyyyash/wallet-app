@@ -1,7 +1,13 @@
 
 import db from "@repo/db/client";
-import CredentialsProvider from "next-auth/providers/credentials"
+import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from 'bcryptjs';
+import { z } from 'zod';
+
+interface Credentials {
+  phone: string;
+  password: string;
+}
 
 export const authOptions = {
   providers: [
@@ -11,10 +17,22 @@ export const authOptions = {
         phone: { label: "Phone number", type: "text", placeholder: "1231231231", required: true },
         password: { label: "Password", type: "password", required: true }
       },
-      // TODO: User credentials type from next-aut
-      async authorize(credentials: any) {
-        // Do zod validation, OTP validation here
-        const hashedPassword = await bcrypt.hash(credentials.password, 10);
+      async authorize(credentials: Record<"phone" | "password", string> | undefined) {
+        if (!credentials) {
+          return null;
+        }
+
+        const credentialsSchema = z.object({
+          phone: z.string().min(10).max(15),
+          password: z.string().min(6),
+        });
+
+        try {
+          credentialsSchema.parse(credentials);
+        } catch (e) {
+          return null;
+        }
+
         const existingUser = await db.user.findFirst({
           where: {
             number: credentials.phone
@@ -28,10 +46,12 @@ export const authOptions = {
               id: existingUser.id.toString(),
               name: existingUser.name,
               email: existingUser.number
-            }
+            };
           }
           return null;
         }
+
+        const hashedPassword = await bcrypt.hash(credentials.password, 10);
 
         try {
           const user = await db.user.create({
@@ -45,22 +65,21 @@ export const authOptions = {
             id: user.id.toString(),
             name: user.name,
             email: user.number
-          }
+          };
         } catch (e) {
           console.error(e);
         }
 
-        return null
+        return null;
       },
     })
   ],
   secret: process.env.JWT_SECRET || "secret",
   callbacks: {
-    // TODO: can u fix the type here? Using any is bad
-    async session({ token, session }: any) {
-      session.user.id = token.sub
-
-      return session
+    async session({ token, session }: { token: any; session: any }) {
+      session.user.id = token.sub;
+      return session;
     }
   }
 }
+
