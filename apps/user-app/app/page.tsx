@@ -1,8 +1,9 @@
+import { SidebarComponent } from "@/components/sidebarComponent";
 
 export default function Home() {
   return (
     <div>
-      User app
+      <SidebarComponent />
     </div>
   );
 }
