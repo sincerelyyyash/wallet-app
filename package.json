@@ -23,6 +23,7 @@
   ],
   "dependencies": {
     "next-themes": "^0.3.0",
+    "recoil": "^0.7.7",
     "zod": "^3.23.8"
   }
 }
