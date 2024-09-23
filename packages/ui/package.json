@@ -14,7 +14,8 @@
     "./cn": "./lib/utils.ts",
     "./sidebar": "./src/sidebar.tsx",
     "./dropdown-menu": "./src/dropdown-menu.tsx",
-    "./theme-toggle": "./src/theme-toggle.tsx"
+    "./theme-toggle": "./src/theme-toggle.tsx",
+    "./footer": "./src/footer.tsx"
   },
   "scripts": {
     "lint": "eslint . --max-warnings 0",
