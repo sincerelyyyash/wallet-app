@@ -1,4 +1,3 @@
-
 import { SidebarComponent } from "@/components/sidebarComponent";
 
 export default function Layout({ children }: { children: React.ReactNode; }): JSX.Element {
